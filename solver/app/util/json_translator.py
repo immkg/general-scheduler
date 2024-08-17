@@ -1,5 +1,4 @@
 import json
-from pprint import pprint
 
 
 def conditionInput(incons):
@@ -57,64 +56,64 @@ def conditionInput(incons):
     comfid['27'] = 'non_consecutive'
 
     for x in list(comfid.keys()):
-        if(x != '24'):
+        if (x != '24'):
             constraints_dict[comfid[x]] = []
     constraints_dict[comfid['24']] = {}
 
     for x in cons['comfConst']:
-        if(int(x['ctype']) == 1):
-            if(int(x['p']) == -1):
+        if (int(x['ctype']) == 1):
+            if (int(x['p']) == -1):
                 constraints_dict[comfid['1']].append(
                     (int(x['t']), int(x['d'])))
-            elif(int(x['d']) == -1):
+            elif (int(x['d']) == -1):
                 constraints_dict[comfid['2']].append(
                     (int(x['t']), int(x['p'])))
             else:
                 constraints_dict[comfid['0']].append(
                     (int(x['t']), int(x['d']), int(x['p'])))
-        elif(int(x['ctype']) == 2):
-            if(int(x['p']) == -1):
+        elif (int(x['ctype']) == 2):
+            if (int(x['p']) == -1):
                 constraints_dict[comfid['4']].append(
                     (int(x['t']), int(x['d'])))
-            elif(int(x['d']) == -1):
+            elif (int(x['d']) == -1):
                 constraints_dict[comfid['5']].append(
                     (int(x['t']), int(x['p'])))
             else:
                 constraints_dict[comfid['3']].append(
                     (int(x['t']), int(x['d']), int(x['p'])))
-        elif(int(x['ctype']) == 3):
-            if(int(x['p']) == -1):
+        elif (int(x['ctype']) == 3):
+            if (int(x['p']) == -1):
                 constraints_dict[comfid['7']].append(
                     (int(x['g']), int(x['d'])))
-            elif(int(x['d']) == -1):
+            elif (int(x['d']) == -1):
                 constraints_dict[comfid['8']].append(
                     (int(x['g']), int(x['p'])))
             else:
                 constraints_dict[comfid['6']].append(
                     (int(x['g']), int(x['d']), int(x['p'])))
-        elif(int(x['ctype']) == 4):
+        elif (int(x['ctype']) == 4):
             constraints_dict[comfid['13']].append((int(x['g1']), int(x['g2'])))
-        elif(int(x['ctype']) == 5):
+        elif (int(x['ctype']) == 5):
             constraints_dict[comfid['12']].append((int(x['t1']), int(x['t2'])))
-        elif(int(x['ctype']) == 6):
+        elif (int(x['ctype']) == 6):
             constraints_dict[comfid['26']].append((int(x['t1']), int(x['t2'])))
-        elif(int(x['ctype']) == 7):
+        elif (int(x['ctype']) == 7):
             constraints_dict[comfid['14']].append((int(x['t']), int(x['nd'])))
-        elif(int(x['ctype']) == 8):
+        elif (int(x['ctype']) == 8):
             constraints_dict[comfid['16']].append(
                 (int(x['g']), int(x['d']), int(x['np'])))
-        elif(int(x['ctype']) == 9):
+        elif (int(x['ctype']) == 9):
             constraints_dict[comfid['18']].append((int(x['t']), int(x['k'])))
-        elif(int(x['ctype']) == 10):
+        elif (int(x['ctype']) == 10):
             t, s, g, n = 0, 0, 0, 0
             for y in cons['subs']:
-                if(y['id'] == int(x['s'])):
+                if (y['id'] == int(x['s'])):
                     t, s, g, n = int(
                         y['t']), int(
                         y['id']), int(
                         y['g']), int(
                         y['n']),
-            if(int(x['mode']) == 1):
+            if (int(x['mode']) == 1):
                 if (t, s, g, n) in constraints_dict[comfid['24']]:
                     constraints_dict[comfid['24']][(
                         t, s, g, n)].append(int(x['p']))
