@@ -6,8 +6,6 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 from jsontranslator import *
-import sys
-sys.path.append('/home/melman/sih/class_files')
 # from tornado import web
 
 
