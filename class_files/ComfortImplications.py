@@ -1,37 +1,38 @@
 from collections import defaultdict
 from StaticVariables import *
+from utils import *
 
 class ComfortImplications():
     """docstring for ComfortImplications"""
 
     def __init__(self):
         self.comfort_graph = {}
-        self.comfort_graph['xtdp'] = {}
-        self.comfort_graph['xtsgnd'] = {}
-        self.comfort_graph['x!tsgndp'] = {}
-        self.comfort_graph['xtd'] = {}
-        self.comfort_graph['xtp'] = {}
-        self.comfort_graph['xgdp'] = {}
-        self.comfort_graph['xgd'] = {}
-        self.comfort_graph['xgp'] = {}
-        self.comfort_graph['lkgd'] = {}
+        self.comfort_graph['xtdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtsgnd'] = defaultdict(lambda: [])
+        self.comfort_graph['x!tsgndp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtd'] = defaultdict(lambda: [])
+        self.comfort_graph['xtp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgd'] = defaultdict(lambda: [])
+        self.comfort_graph['xgp'] = defaultdict(lambda: [])
+        self.comfort_graph['lkgd'] = defaultdict(lambda: [])
         self.comfort_true_list = []
 
-        StaticVariables.days = days
-        StaticVariables.periods = StaticVariables.periods
-        StaticVariables.duration = duration
+        # StaticVariables.days = []
+        # StaticVariables.periods = StaticVariables.periods
+        # StaticVariables.duration = duratio
 
     def reset(self):
         self.comfort_graph = {}
-        self.comfort_graph['xtdp'] = {}
-        self.comfort_graph['xtsgnd'] = {}
-        self.comfort_graph['x!tsgndp'] = {}
-        self.comfort_graph['xtd'] = {}
-        self.comfort_graph['xtp'] = {}
-        self.comfort_graph['xgdp'] = {}
-        self.comfort_graph['xgd'] = {}
-        self.comfort_graph['xgp'] = {}
-        self.comfort_graph['lkgd'] = {}
+        self.comfort_graph['xtdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtsgnd'] = defaultdict(lambda: [])
+        self.comfort_graph['x!tsgndp'] = defaultdict(lambda: [])
+        self.comfort_graph['xtd'] = defaultdict(lambda: [])
+        self.comfort_graph['xtp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgdp'] = defaultdict(lambda: [])
+        self.comfort_graph['xgd'] = defaultdict(lambda: [])
+        self.comfort_graph['xgp'] = defaultdict(lambda: [])
+        self.comfort_graph['lkgd'] = defaultdict(lambda: [])
         self.comfort_true_list = []
 
     def format_result(self):
@@ -44,15 +45,15 @@ class ComfortImplications():
                           teacher_forbidden1 = [],
                           teacher_forbidden2 = []):
 
-        if not teacher_forbidden0:
+        if teacher_forbidden0:
             for (t, d, p) in teacher_forbidden0:
                 self.comfort_true_list.append(negation(('xtdp', (t, d, p))))
         
-        if not teacher_forbidden1:
+        if teacher_forbidden1:
             for (t, d) in teacher_forbidden1:
                 self.comfort_true_list.append(negation(('xtd', (t, d))))
         
-        if not teacher_forbidden2:
+        if teacher_forbidden2:
             for (t, p) in teacher_forbidden2:
                 self.comfort_true_list.append(negation(('xtp', (t, p))))
 
@@ -63,15 +64,15 @@ class ComfortImplications():
                           teacher_requested1 = [],
                           teacher_requested2 = []):
 
-        if not teacher_requested0:
+        if teacher_requested0:
             for (t, d, p) in teacher_requested0:
                 self.comfort_true_list.append(('xtdp', (t, d, p)))
         
-        if not teacher_requested1:
+        if teacher_requested1:
             for (t, d) in teacher_requested1:
                 self.comfort_true_list.append(('xtd', (t, d)))
         
-        if not teacher_requested2:
+        if teacher_requested2:
             for (t, p) in teacher_requested2:
                 self.comfort_true_list.append(('xtp', (t, p)))
 
@@ -82,15 +83,15 @@ class ComfortImplications():
                         group_forbidden1 = [],
                         group_forbidden2 = []):
 
-        if not group_forbidden0:
+        if group_forbidden0:
             for (g, d, p) in group_forbidden0:
                 self.comfort_true_list.append(negation(('xgdp', (g, d, p))))
         
-        if not group_forbidden1:
+        if group_forbidden1:
             for (g, d) in group_forbidden1:
                 self.comfort_true_list.append(negation(('xgd', (g, d))))
         
-        if not group_forbidden2:
+        if group_forbidden2:
             for (g, p) in group_forbidden2:
                 self.comfort_true_list.append(negation(('xgp', (g, p))))
 
@@ -101,15 +102,15 @@ class ComfortImplications():
                         group_requested1 = [],
                         group_requested2 = []):
 
-        if not group_requested0:
+        if group_requested0:
             for (g, d, p) in group_requested0:
                 self.comfort_true_list.append(('xgdp', (g, d, p)))
         
-        if not group_requested1:
+        if group_requested1:
             for (g, d) in group_requested1:
                 self.comfort_true_list.append(('xgd', (g, d)))
         
-        if not group_requested2:
+        if group_requested2:
             for (g, p) in group_requested2:
                 self.comfort_true_list.append(('xgp', (g, p)))
 
@@ -123,7 +124,7 @@ class ComfortImplications():
                  teacher_no_overlap = [],
                  group_no_overlap = []):
 
-        if not teacher_no_overlap:
+        if teacher_no_overlap:
             for (t1, t2) in teacher_no_overlap:
                 for d in StaticVariables.days:
                     for p in StaticVariables.periods[d]:
@@ -132,7 +133,7 @@ class ComfortImplications():
                         self.comfort_graph['xtdp'][(t2, d, p)].append(
                             negation(('xtdp', (t1, d, p))))
         
-        if not group_no_overlap:
+        if group_no_overlap:
             for (g1, g2) in group_no_overlap:
                 for d in StaticVariables.days:
                     for p in StaticVariables.periods[d]:
@@ -144,7 +145,7 @@ class ComfortImplications():
         # b)
         # Compulsory teacher overlap
         
-        if not teacher_overlap:
+        if teacher_overlap:
             for (t1, t2) in teacher_overlap:
                 for d in StaticVariables.days:
                     for p in StaticVariables.periods[d]:
@@ -159,8 +160,8 @@ class ComfortImplications():
 
     def teaching_days(self, teaching_days = []):
 
-        if not teaching_self.days:
-            for (t, n) in teaching_self.days:
+        if teaching_days:
+            for (t, n) in teaching_days:
                 atmost_var_list = []
                 atleast_var_list = []
                 for d in StaticVariables.days:
@@ -170,7 +171,7 @@ class ComfortImplications():
                 atmost_n = Cardinality(atmost_var_list, n)
                 self.comfort_true_list.append(atmost_n.form())
         
-                atleast_n = Cardinality(atleast_var_list, (no_of_days - n))
+                atleast_n = Cardinality(atleast_var_list, (len(StaticVariables.days) - n))
                 self.comfort_true_list.append(atleast_n.form())
 
         return
@@ -182,7 +183,7 @@ class ComfortImplications():
                  duration_upper_limit = [],
                  duration_lower_limit = []):
 
-        if not work_day_duration:
+        if work_day_duration:
             for (g, k, d) in work_day_duration:
                 self.comfort_graph['lkgd'][(g, k, d)] = []
         
@@ -197,14 +198,14 @@ class ComfortImplications():
         
         # Atmost n hours on day d for group g
         
-        if not duration_upper_limit:
+        if duration_upper_limit:
             for (g, d, n) in duration_upper_limit:
-                for k in range(n + 1, max(self.periods[d]) + 1):
+                for k in range(n + 1, max(StaticVariables.periods[d]) + 1):
                     self.comfort_true_list.append(negation(('lkgd', (k, g, d))))
         
         # Atleast n hours on day d for group g
         
-        if not duration_lower_limit:
+        if duration_lower_limit:
             for (g, d, n) in duration_lower_limit:
                 self.comfort_graph['xgd'][(g, d)].append(
                     ('lkgd', (n, g, d)))  # Not convinced
@@ -223,13 +224,13 @@ class ComfortImplications():
                       group_atmost_one_idle_period = [],
                       group_atmost_k_idle_period = []):
         
-        if not teacher_max_idle_length:
+        if teacher_max_idle_length:
             for (t, k) in teacher_max_idle_length:
                 self.comfort_true_list.append(negation(('ikt', (k, t))))
         
         # Atmost one idle period for a teacher per day
         
-        if not teacher_atmost_one_idle_period:
+        if teacher_atmost_one_idle_period:
             for t in teacher_atmost_one_idle_period:
                 var_list = []
                 for d in StaticVariables.days:
@@ -240,7 +241,7 @@ class ComfortImplications():
         
         # Atmost k idle StaticVariables.periods for a teacher in a week
         
-        if not teacher_atmost_k_idle_period:
+        if teacher_atmost_k_idle_period:
             for (t, k) in teacher_atmost_k_idle_period:
                 var_list = []
                 for d in StaticVariables.days:
@@ -253,13 +254,13 @@ class ComfortImplications():
         # For groups
         # Idle StaticVariables.periods of length k not allowed
         
-        if not group_max_idle_length:
+        if group_max_idle_length:
             for (g, k) in group_max_idle_length:
                 self.comfort_true_list.append(negation(('ikg', (k, g))))
         
         # Atmost one idle period for a group per day
         
-        if not group_atmost_one_idle_period:
+        if group_atmost_one_idle_period:
             for g in group_atmost_one_idle_period:
                 var_list = []
                 for d in StaticVariables.days:
@@ -270,7 +271,7 @@ class ComfortImplications():
         
         # Atmost k idle StaticVariables.periods for a teacher in a week
         
-        if not group_atmost_k_idle_period:
+        if group_atmost_k_idle_period:
             for (g, k) in group_atmost_k_idle_period:
                 var_list = []
                 for d in StaticVariables.days:
@@ -289,8 +290,8 @@ class ComfortImplications():
                            favoured_hours = {},
                            last_first_hours = []):
 
-        if not favoured_hours:  # dict = {(t,s,g,n):[p]}
-            confort_graph['xtsgnd'] = defaultdict(lambda: [])
+        if favoured_hours:  # dict = {(t,s,g,n):[p]}
+            self.comfort_graph['xtsgnd'] = defaultdict(lambda: [])
             for (t, s, g, n) in favoured_hours.keys():
                 for d in StaticVariables.days:
                     self.comfort_graph['xtsgnd'][(t, s, g, n, d)] = []
@@ -303,7 +304,7 @@ class ComfortImplications():
         
         # first or last last lesson in a day: 'x!tsgndp' => (and, negation('xgdp')) or (StaticVariables.and_head, negation('xgdp'))
         
-        if not last_first_hours:
+        if last_first_hours:
             for (t, s, g, n) in last_first_hours:
                 for d in StaticVariables.days:
                     for p in StaticVariables.periods[d]:
@@ -327,7 +328,7 @@ class ComfortImplications():
     #   except for last working day
     def non_consecutive(self, non_consecutive = []):
 
-        if not non_consecutive:
+        if non_consecutive:
             for (t, s, g, n) in non_consecutive:
                 for d in StaticVariables.days[:-1]:
                     self.comfort_graph['xtsgnd'][(t, s, g, n, d)].append(negation(('xtsgnd', (t, s, g, n + 1, d + 1))))

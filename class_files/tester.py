@@ -1,4 +1,6 @@
 from StaticVariables import *
+from PlusRoomImplications import *
+from StandardImplications import *
 
 StaticVariables.duration = {
     (0, 0, 0, 1): 3,
@@ -99,6 +101,114 @@ StaticVariables.subjects = np.array(range(StaticVariables.num_s))
 StaticVariables.groups = np.array(range(StaticVariables.num_g))  
 
 
+StaticVariables.rooms = 7
+
+
+
+StaticVariables.room_dict = {
+    (0, 0, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (0, 0, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (0, 0, 3, 4): [0, 1, 2, 3, 4, 5, 6],
+    (0, 0, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (1, 1, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (1, 1, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (1, 1, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (1, 1, 3, 4): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 3, 1): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 0, 2): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 2, 2): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 3, 2): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 0, 3): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 1, 3): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 3, 3): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 0, 4): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 1, 4): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 2, 4): [0, 1, 2, 3, 4, 5, 6],
+    (2, 2, 3, 4): [0, 1, 2, 3, 4, 5, 6],
+    (3, 3, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (3, 3, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (3, 3, 0, 2): [0, 1, 2, 3, 4, 5, 6],
+    (3, 3, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (3, 3, 0, 3): [0, 1, 2, 3, 4, 5, 6],
+    (3, 3, 1, 3): [0, 1, 2, 3, 4, 5, 6],
+    (4, 3, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (4, 3, 3, 1): [0, 1, 2, 3, 4, 5, 6],
+    (4, 3, 2, 2): [0, 1, 2, 3, 4, 5, 6],
+    (4, 3, 3, 2): [0, 1, 2, 3, 4, 5, 6],
+    (4, 3, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (4, 3, 3, 3): [0, 1, 2, 3, 4, 5, 6], 
+    (5, 4, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 0, 3): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 1, 3): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 0, 4): [0, 1, 2, 3, 4, 5, 6],
+    (5, 4, 1, 4): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 3, 1): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 2, 2): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 3, 2): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 2, 4): [0, 1, 2, 3, 4, 5, 6],
+    (6, 4, 3, 4): [0, 1, 2, 3, 4, 5, 6],
+    (7, 5, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (7, 5, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (7, 5, 0, 2): [0, 1, 2, 3, 4, 5, 6],
+    (7, 5, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (7, 5, 0, 3): [0, 1, 2, 3, 4, 5, 6],
+    (7, 5, 1, 3): [0, 1, 2, 3, 4, 5, 6],
+    (8, 5, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (8, 5, 3, 1): [0, 1, 2, 3, 4, 5, 6],
+    (8, 5, 2, 2): [0, 1, 2, 3, 4, 5, 6],
+    (8, 5, 3, 2): [0, 1, 2, 3, 4, 5, 6],
+    (8, 5, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (8, 5, 3, 3): [0, 1, 2, 3, 4, 5, 6],
+    (9, 6, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (9, 6, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (9, 6, 0, 2): [0, 1, 2, 3, 4, 5, 6],
+    (9, 6, 1, 2): [0, 1, 2, 3, 4, 5, 6],
+    (9, 6, 0, 3): [0, 1, 2, 3, 4, 5, 6],
+    (9, 6, 1, 3): [0, 1, 2, 3, 4, 5, 6],
+    (10, 6, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (10, 6, 3, 1): [0, 1, 2, 3, 4, 5, 6],
+    (10, 6, 2, 2): [0, 1, 2, 3, 4, 5, 6],
+    (10, 6, 3, 2): [0, 1, 2, 3, 4, 5, 6],
+    (10, 6, 2, 3): [0, 1, 2, 3, 4, 5, 6],
+    (10, 6, 3, 3): [0, 1, 2, 3, 4, 5, 6],
+    (11, 7, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (11, 7, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (11, 7, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (11, 7, 3, 1): [0, 1, 2, 3, 4, 5, 6],
+    (12, 8, 0, 1): [0, 1, 2, 3, 4, 5, 6],
+    (12, 8, 1, 1): [0, 1, 2, 3, 4, 5, 6],
+    (12, 8, 2, 1): [0, 1, 2, 3, 4, 5, 6],
+    (12, 8, 3, 1): [0, 1, 2, 3, 4, 5, 6],    
+    
+    
+}
+
+
+
+# StaticVariables.room_dict = {
+#     (5, 4, 0, 4): [1, 2, 3],
+#     (5, 4, 1, 4): [1, 2, 3],
+#     (6, 4, 2, 1): [1, 2, 3],
+#     (9, 6, 0, 3): [2, 3, 4],
+#     (9, 6, 1, 3): [2, 3, 4],
+#     (10, 6, 2, 1): [3, 4, 6],
+#     (10, 6, 3, 1): [2, 4, 5],
+#     (11, 7, 2, 1): [1, 5],
+#     (11, 7, 3, 1): [1],
+#     (12, 8, 0, 1): [1]
+# }
+
 
 from range_constraints import *
 from utils import *
@@ -109,51 +219,50 @@ from utils import *
 
 from tabulate import tabulate
 
-x = StandardImplications()
+x = NaiveRoomAlloc()
 x.init_vars()
 x.basic_implications()
 x.correctness_implications()
+x.room_form_variables()
+x.room_basic_implications()
+x.room_correctness_implications()
 x.format_result()
+
+# print x.graph['xtsgndpr'].values()
 z = Parser([x.graph], [x.true_list])
 z.compute_result(1)
-print 'x!tsgndp: ', len(z.result_graphs[0]['x!tsgndp'][True]), len(StaticVariables.duration)
-print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x for x in StaticVariables.duration.values()])
+# print 'x!tsgndp: ', len(z.result_graphs[0]['x!tsgndp'][True]), len(StaticVariables.duration)
+# print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x for x in StaticVariables.duration.values()])
 
-print simple_ttable(z.result_graphs[0]['xtsgndp'][True])
+# print simple_ttable(z.result_graphs[0]['xtsgndp'][True])
 
 from tabulate import tabulate
 
-courses = {}
+# courses = {}
 
-for (t, s, g, n) in StaticVariables.duration.keys():
-    courses[(t, s)] = []
+# for (t, s, g, n) in StaticVariables.duration.keys():
+#     courses[(t, s)] = []
 
-bdf = [x for x in courses.keys()]
-for x in range(len(courses)):
-    courses[bdf[x]] = 'ID ' + str(x)
-
+# bdf = [x for x in courses.keys()]
+# for x in range(len(courses)):
+#     courses[bdf[x]] = 'ID ' + str(x)
+from utils import *
 for sol in z.result_graphs:
     result_graph = z.result_graphs[sol]
-    scheduled = result_graph['xtsgndp'][True]
-    
-    ttable = [[ [] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
-    
-    for (t, s, g, n, d, p) in scheduled:
-        if courses[(t, s)] not in ttable[d][p]:
-            ttable[d][p].append(courses[(t, s)])
-        
-    for i in range(len(ttable)):
-        ttable[i].insert(0, "Day {}".format(str(i)))
+    print result_graph.keys()
+    scheduled = result_graph['xtsgndpr'][True]
+    print scheduled
+    ttable = simple_ttable_wr(scheduled)
     
     print tabulate(ttable, headers=["X"]+range(StaticVariables.p_max), tablefmt='fancy_grid').encode('utf-8')
 
-g = [x for x in z.result_graphs]
-A = [[] for x in range(len(g))]
+# g = [x for x in z.result_graphs]
+# A = [[] for x in range(len(g))]
 
-for i in range(len(g)):
-    for j in range(len(g)):
-        A[i].append((g[i] == g[j]))
+# for i in range(len(g)):
+#     for j in range(len(g)):
+#         A[i].append((g[i] == g[j]))
 
-for i in A:
-    print 
-    print i
+# for i in A:
+#     print 
+#     print i

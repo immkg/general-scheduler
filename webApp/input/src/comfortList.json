@@ -38,13 +38,5 @@
       {
         "id" : 10,
         "label" : "Lessons with fixed / forbidden periods"
-      },
-      {
-        "id" : 11,
-        "label" : "Lessons with fixed / forbidden days"
-      },
-      {
-        "id" : 12,
-        "label" : "Lessons that should / shouldn't be taught on consecutive days"
       }
       ]}

@@ -17,6 +17,7 @@ class Parser():
                 for j in graph[i]:
                     bool_list.append(Implies(parse_val((i, j)), parse_val(graph[i][j])))
 
+
         for true_list in self.true_lists:
             formatted_true_list = parse_val(true_list)
             if formatted_true_list != None:

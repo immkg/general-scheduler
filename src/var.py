@@ -181,45 +181,41 @@ comfort_true_list = []
 
 
 '''
-Sketch
+def teacherForbidden(teacher_forbidden0 = [],
+                     teacher_forbidden1 = [],
+                     teacher_forbidden2 = []):
 
-teacher_forbidden0 = [(t, d, p)]
-teacher_forbidden1 = [(t, d)]
-teacher_forbidden2 = [(t, p)]
+def teacherRequested(teacher_requested0 = [],
+                     teacher_requested1 = [],
+                     teacher_requested2 = []):
 
-teacher_requested0 = [(t, d, p)]
-teacher_requested1 = [(t, d)]
-teacher_requested2 = [(t, p)]
+def groupForbidden(group_forbidden0 = [],
+                   group_forbidden1 = [],
+                   group_forbidden2 = []):
 
-group_forbidden0 = [(g, d, p)]
-# group_forbidden1 = [(g, d)]
-# group_forbidden2 = [(g, p)]
+def groupRequested(group_requested0 = [],
+                   group_requested1 = [],
+                   group_requested2 = []):
 
-group_requested0 = [(g, d, p)]
-# group_requested1 = [(g, d)]
-# group_requested2 = [(g, p)]
+def overlaps(teacher_overlap = [],
+             teacher_no_overlap = [],
+             group_no_overlap = []):
 
-teacher_no_overlap = [(t1, t2)]
-teacher_overlap = [(t1, t2)]
-group_no_overlap = [(g1, g2)]
+def teachingDays(teaching_days = []):
 
-teaching_days = [(t, n)]        # n <= d
-no_of_days = len(days)
+def duration(work_day_duration = [],
+             duration_upper_limit = [],
+             duration_lower_limit = []):
 
-work_day_duration = [(g, k, d)]
+def idleDuration(teacher_max_idle_length = [],
+                 teacher_atmost_one_idle_period = [],
+                 teacher_atmost_k_idle_period = [],
+                 group_max_idle_length = [],
+                 group_atmost_one_idle_period = [],
+                 group_atmost_k_idle_period = []):
 
-duration_upper_limit = [(g, d, n)]
+def hourSpecification(favoured_hours = {},
+                      last_first_hours = []):
 
-duration_lower_limit = [(g, d, n)]
-
-teacher_max_idle_length = [(t, k)]
-teacher_atmost_one_idle_period = [t]
-teacher_atmost_k_idle_period = [(t, k)]
-
-group_max_idle_length = [(g, k)]
-group_atmost_one_idle_period = [g]
-group_atmost_k_idle_period = [(g, k)]
-
-favoured_hours = {(t,s,g,n, d):[p]}
-last_first_hours = [(t,s,g,n)]
+def nonConsecutive(non_consecutive = []):
 '''

@@ -33,10 +33,10 @@
 # USAGE
 
 * Make sure you have installed all the dependencies and built z3 successfully
-* Change current working directory to src/
+* Change current working directory to class_files/
 * Edit duration dict in var.py as per your requirements
-* run `python ttablemaker.py` to see time-table in terminal
-* run `python ttablemaker.py > table.data` to store the time-table in file
+* run `python tester.py` to see time-table in terminal
+* run `python tester.py > table.data` to store the time-table in file
 
 # CONTACT
 * Mayank <131501018@smail.iitpkd.ac.in> 

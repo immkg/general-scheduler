@@ -1,3 +1,6 @@
+
+/*@import '../node_modules/elemental/less/elemental.less'*/
+
 .App {
   text-align: center;
 }
@@ -22,7 +25,8 @@
   font-size: large;
 }
 
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+label
+{
+  margin-right: 4px;
+  margin-left: 5px;
 }

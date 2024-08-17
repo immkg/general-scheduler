@@ -3,7 +3,11 @@ import tornado.ioloop
 import tornado.web
 import tornado.websocket
 from jsontranslator import *
+import sys
+sys.path.append('/home/melman/sih/class_files')
+from interface import *
 import json
+from pprint import pprint
 # from tornado import web
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -32,8 +36,10 @@ class inputDataHandler(tornado.websocket.WebSocketHandler):
 
         else:
             self.write_message("solving..")
-            conditionInput(message)
-            ttable = [['Day 0', [], [], [], [], [], []], ['Day 1', [(1, 0, 0, 2), (1, 0, 1, 2)], [(1, 0, 1, 2), (1, 0, 0, 2)], [(1, 0, 1, 2), (1, 0, 0, 2)], [(1, 0, 1, 2), (1, 0, 0, 2)], [], []], ['Day 2', [], [], [(1, 1, 1, 2), (1, 1, 0, 2)], [(1, 1, 0, 2), (1, 1, 1, 2)], [(1, 1, 1, 2), (1, 1, 0, 2)], [(1, 1, 1, 2), (1, 1, 0, 2)]], ['Day 3', [], [], [(0, 0, 1, 2)], [(0, 0, 1, 2)], [(0, 0, 1, 2)], [(0, 0, 1, 2)]], ['Day 4', [], [], [(0, 1, 1, 2), (0, 1, 0, 2)], [(0, 1, 1, 2), (0, 1, 0, 2)], [(0, 1, 0, 2), (0, 1, 1, 2)], [(0, 1, 1, 2), (0, 1, 0, 2)]], ['Day 5', [(0, 0, 0, 1)], [(0, 0, 0, 1)], [(0, 0, 0, 1)], [(0, 0, 0, 1)], [], []]]
+            const_dict = conditionInput(message)
+            pprint(const_dict)
+            ttable = interface(const_dict)
+            # ttable = [['Day 0', [], [], [], [], [], []], ['Day 1', [(1, 0, 0, 2), (1, 0, 1, 2)], [(1, 0, 1, 2), (1, 0, 0, 2)], [(1, 0, 1, 2), (1, 0, 0, 2)], [(1, 0, 1, 2), (1, 0, 0, 2)], [], []], ['Day 2', [], [], [(1, 1, 1, 2), (1, 1, 0, 2)], [(1, 1, 0, 2), (1, 1, 1, 2)], [(1, 1, 1, 2), (1, 1, 0, 2)], [(1, 1, 1, 2), (1, 1, 0, 2)]], ['Day 3', [], [], [(0, 0, 1, 2)], [(0, 0, 1, 2)], [(0, 0, 1, 2)], [(0, 0, 1, 2)]], ['Day 4', [], [], [(0, 1, 1, 2), (0, 1, 0, 2)], [(0, 1, 1, 2), (0, 1, 0, 2)], [(0, 1, 0, 2), (0, 1, 1, 2)], [(0, 1, 1, 2), (0, 1, 0, 2)]], ['Day 5', [(0, 0, 0, 1)], [(0, 0, 0, 1)], [(0, 0, 0, 1)], [(0, 0, 0, 1)], [], []]]
             self.write_message(json.dumps(ttable))
             #call the solver
       

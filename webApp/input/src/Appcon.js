@@ -2,8 +2,18 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
 import comfortList from './comfortList.json'
+// import {Button} from 'react-mdl'
+import {RaisedButton, TextField, FlatButton, AppBar, SvgIcon, Drawer, MenuItem, Dialog} from 'material-ui';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 
-class App extends Component {
+class Appcon extends Component {
   constructor(props){
     super(props);
     this.state={
@@ -12,14 +22,20 @@ class App extends Component {
       no_c : 0,
       cid : 0,
       subs: [],
-      no_t : 0,
-      no_g : 0,
+      no_t : 4,
+      no_g : 4,
       dow: 5,
-      no_p: 8,
+      no_p: 6,
       maxNoClass: 6,
       comforts: comfortList.comforts,
       comfConst: [],
+      completed: 0,
+      helpopen : false,
     }
+  }
+  getInitialProps ({ pathname, query }) {
+    this.setState({hostname: pathname});
+    console.log(pathname);
   }
 
   StartWebSocket = (currstate) => (evt) =>
@@ -44,7 +60,9 @@ class App extends Component {
         {
           if(rec_msg.startsWith("["))
           {
-            this.maketables(JSON.parse(rec_msg))
+            this.setState({"result" : JSON.parse(rec_msg)});
+            this.setState({"completed": 1})
+            // this.maketables(JSON.parse(rec_msg))
           }
         }
      };
@@ -52,7 +70,7 @@ class App extends Component {
      this.ws.onclose = () =>
      { 
         // websocket is closed.
-        alert("Connection is closed..."); 
+        console.log("Connection is closed..."); 
      };
 
      window.onbeforeunload = (event) => {
@@ -61,66 +79,171 @@ class App extends Component {
     
   }
 
-  maketables = (data) =>
-  {
-    console.log("Making all tables");
-    console.log(data);
-  }
 
   render() {
     return (
       <div className="App">
-        <h2>Time Machine</h2>
-        <button onClick={() => {console.log(this.state)}}>log state</button>
+      <Drawer open={false}>
+          <MenuItem>Please list all lessons and comfort constraints. Press Send to start solving.</MenuItem>
+          <MenuItem><FlatButton label="log current state" onClick={() => {console.log(this.state)}}/></MenuItem>
+        </Drawer>
+      <AppBar onClick={() => {console.log(this.state)}} title="Time Table Scheduler" />
         <div>
           <label>No of working days in a week:</label>
-          <input id="dow" type='number' onChange={this.handleChangedow} placeholder={this.state.dow} min="1" max="7"/>
+          <TextField id="dow" type='number' onChange={this.handleChangedow} defaultValue={this.state.dow} min="1"/>
           <br/>
           <label>No of periods in a day:</label>
-          <input id="no_p" type='number' onChange={this.handleChangeNo_p} placeholder={this.state.no_p} min="1"/>
+          <TextField id="no_p" type='number' onChange={this.handleChangeNo_p} defaultValue={this.state.no_p} min="1"/>
           <br/>
           <label>no of T: </label>
-          <input id="no_t" type='number' onChange={this.handleChangeNo_t} placeholder={this.state.no_t} min="1"/>
+          <TextField id="no_t" type='number' onChange={this.handleChangeNo_t} defaultValue={this.state.no_t} min="1"/>
           <br/>
           <label>no of G: </label>
-          <input id="no_g" type='number' onChange={this.handleChangeNo_g} placeholder={this.state.no_g} min="1"/>
+          <TextField id="no_g" type='number' onChange={this.handleChangeNo_g} defaultValue={this.state.no_g} min="1"/>
         </div>
-        <h3>correctness constraints</h3>
+        <h3>Correctness constraints</h3>
         <ul>
         {this.state.subs.map((subs, idx) => (
           <li key={subs.id}>
-          <div className='constraintBar'>
-            Subject id: {subs.id} &nbsp;
-            <input type='text' placeholder={`Subject`} onChange={this.handleChangeClassName(subs.id)} />
-            Teacher: { this.createTlist(subs.id) }
-            Group: { this.createGlist(subs.id) }
-            Hours: <input type='number' onChange={this.handleChangeHour(subs.id)} placeholder="1" min="1"/>
+          <span className='constraintBar'>
+            <label>Subject id: {subs.id}</label>
+            <TextField id={`name` + subs.id} type='text' floatingLabelText={`Subject`} onChange={this.handleChangeClassName(subs.id)} />
+            <label>Teacher:</label> { this.createTlist(subs.id) }
+            <label>Group:</label> { this.createGlist(subs.id) }
+            <label>Hours:</label> <TextField id={`n` + subs.id} type='number' onChange={this.handleChangeHour(subs.id)} defaultValue={subs.dur} min="1"/>
             for {this.createNList(subs.id)} time.
-            <button onClick={this.handleRemoveClass(subs.id)} > Remove </button>
-          </div>
+            <FlatButton onClick={this.handleRemoveClass(subs.id)} secondary={true} label='Remove' />
+          </span>
           </li>
           )
           )}
         </ul>
-        <button onClick={this.handleAddClass} > Add a class </button>
+        <RaisedButton onClick={this.handleAddClass} primary={true} label="Add a class" />
         <h3>Comfort constraints</h3>
         Add a comfort constraint: {this.listComfort()}
-        <button onClick={this.handleAddComfort()}>Add</button>
+        <FlatButton onClick={this.handleAddComfort()} primary={true} label="Add"/>
         <div>
         <ul>
           {this.state.comfConst.map((cons, idx) => (
             <li key={idx}>
               {this.makeConstBody(cons)}
-              <button onClick={this.handleRemoveComf(cons.id)} > Remove </button>
+              <FlatButton onClick={this.handleRemoveComf(cons.id)} secondary={true} label="Remove" />
             </li>
           ))}
         </ul>
         </div>
         <div>
-          <button onClick={this.StartWebSocket(this.state)}>Send</button>
+          <RaisedButton onClick={this.StartWebSocket(this.state)} primary={true} label="Send"/>
+        </div>
+        <div className='ttable'>
+          {this.maketables()}
         </div>
         </div>
     );
+  }
+  // makenewtables = () =>
+  // {
+
+  //   if(this.state.completed === 0)
+  //   {
+  //     return(<span></span>)
+  //   }
+  //   else
+  //   {
+  //     var k = 0
+  //     var heads = [React.createElement("TableHeaderColumn", {key: k++}, "X")]
+  //     var nocol = 0;
+  //     var rows = []
+  //     this.state.result.forEach((rowlist) => {
+  //       var rowitems = []
+  //       rowlist.forEach((rowitem) => {
+  //         var cellitems = []
+  //         if(typeof(rowitem) != "string")
+  //           rowitem.forEach((cellitem) => {
+  //             cellitems.push(React.createElement('span', {key: k++}, "(" + cellitem + ") "))
+  //           })
+  //         else
+  //           cellitems.push(React.createElement('span', {key: k++}, rowitem))
+  //         // console.log(rowitem.length)
+  //         rowitems.push(React.createElement('TableRowColumn', { key : k++}, cellitems))
+  //       })
+  //       if(rowitems.length > nocol)
+  //         nocol = rowitems.length
+  //       rows.push(React.createElement('TableRow', { key : k++}, rowitems));
+  //     })
+  //     for(var i = 0; i < nocol - 1; i++)
+  //     {
+  //       heads.push(React.createElement("TableHeaderColumn", {key : k++}, "Period " + i))
+  //     }
+  //     console.log("Making all tables");
+  //     console.log(this.state.result);
+  //     console.log(nocol);
+
+
+
+  //     var ttable = React.createElement('table', {border : 1, style : { display : "inline-block", margin : "5px"}}, 
+  //       React.createElement('TableBody', {key: k++},  [
+  //         React.createElement('TableRowColumn', {key: k++}, heads),
+  //         rows
+  //         ]
+  //       )
+  //     )
+  //     return(ttable)
+  //   }
+    
+  // }
+  maketables = () =>
+  {
+
+    if(this.state.completed === 0)
+    {
+      return(<span></span>)
+    }
+    else
+    {
+      var k = 0
+      var heads = [React.createElement("th", {key: k++}, "X")]
+      var nocol = 0;
+      var rows = []
+      this.state.result.forEach((rowlist) => {
+        var rowitems = []
+        rowlist.forEach((rowitem) => {
+          var cellitems = []
+          if(typeof(rowitem) != "string")
+            rowitem.forEach((cellitem) => {
+              var thissub = this.state.subs.filter((subs) => subs.id == cellitem[1]);
+              // console.log(thissub);
+              // cellitems.push(React.createElement('span', {key: k++}, "(" + thissub[0].name + ") "))
+              cellitems.push(React.createElement('span', {key: k++}, "(" + cellitem + ") "))
+            })
+          else
+            cellitems.push(React.createElement('span', {key: k++}, rowitem))
+          // console.log(rowitem.length)
+          rowitems.push(React.createElement('td', { key : k++}, cellitems))
+        })
+        if(rowitems.length > nocol)
+          nocol = rowitems.length
+        rows.push(React.createElement('tr', { key : k++}, rowitems));
+      })
+      for(var i = 0; i < nocol - 1; i++)
+      {
+        heads.push(React.createElement("th", {key : k++}, "Period " + i))
+      }
+      console.log("Making all tables");
+      console.log(this.state.result);
+
+
+
+      var ttable = React.createElement('table', {border : 1, style : { display : "inline-block", margin : "5px"}}, 
+        React.createElement('tbody', {key: k++},  [
+          React.createElement('tr', {key: k++}, heads),
+          rows
+          ]
+        )
+      )
+      return(ttable)
+    }
+
   }
   handleAddClass = () => {
     if(this.state.no_s < 100){
@@ -225,6 +348,7 @@ class App extends Component {
         break;
       case "8":
         newcons['g'] = 0;
+        newcons['d'] = 0;
         newcons['np'] = 1;
         break;
       case "9":
@@ -285,14 +409,14 @@ class App extends Component {
     {
       case "1": return (<span>Teacher: {this.createTlistComf(cons)} prefers not to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
       case "2": return (<span>Teacher: {this.createTlistComf(cons)} prefers to be scheduled on day: {this.createDlistComf(cons)} during period: {this.createPlistComf(cons)} </span>);
-      case "3": return (<span>Group : {this.createGlistComf(cons)} prefers not to be scheduled on day {this.createDlistComf(cons)} during period {this.createPlistComf(cons)} </span>);
+      case "3": return (<span>Group : {this.createGlistComf(cons)} prefers not to be scheduled on day {this.createDlistComf(cons, 'd', false)} during period {this.createPlistComf(cons, 'p', false)} </span>);
       case "4": return (<span>Group : {this.createGlistComf(cons, "g1")} and Group : {this.createGlistComf(cons, "g2")} prefer not to be scheduled at the same time</span>);
       case "5": return (<span>Techers {this.createTlistComf(cons, "t1")} and {this.createTlistComf(cons, "t2")} prefer not to be scheduled at the same time</span>);
       case "6": return (<span>Techers {this.createTlistComf(cons, "t1")} and {this.createTlistComf(cons, "t2")} prefer to be scheduled at the same time</span>);
       case "7": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have classes on atmost {this.createNoDComf(cons)} days</span>);
-      case "8": return (<span>Group : {this.createGlistComf(cons)} prefers to have their classes limited to {this.createPlistComf(cons, "np")} periods</span>);
+      case "8": return (<span>Group : {this.createGlistComf(cons)} prefers to have their classes limited to {this.createPlistComf(cons, "np")} periods on {this.createDlistComf(cons, 'd', false)}</span>);
       case "9": return (<span>Teacher : {this.createTlistComf(cons)} prefers to have atmost {this.createPlistComf(cons, "k")} idle periods per day.</span>);
-      case "10": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught during period: {this.createPlistComf(cons)}</span>);
+      case "10": return (<span>Subject : {this.createSubListComf(cons)} is preferred to be taught during period: {this.createPlistComf(cons, "p", false)}</span>);
       case "11": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on {this.createDlistComf(cons)}</span>);
       case "12": return (<span>Subject : {this.createSubListComf(cons)} is {this.askPreferComf(cons)} to be taught on consecutive days</span>);
     }
@@ -334,20 +458,28 @@ class App extends Component {
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
-  createDlistComf(comf, paramName='d')
+  createDlistComf(comf, paramName='d', alldays= true)
   {
-    var options = [React.createElement('option', {"value" : 0, "key": 0},  "All days")];
+    var options = [];
+    if(alldays)
+    {
+      options = [React.createElement('option', {"value" : -1, "key": 0},  "All days")];
+    }
     var days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     for(var i = 0; i < this.state.dow; i++){
-      options.push(React.createElement('option', {"value" : i + 1, "key": i + 1}, ((i+1).toString()) + " (" + days[i] + ")"));
+      options.push(React.createElement('option', {"value" : i, "key": i + 1}, ((i).toString()) + " (" + days[i] + ")"));
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
-  createPlistComf(comf, paramName='p')
+  createPlistComf(comf, paramName='p', allperiods = true)
   {
-    var options = [React.createElement('option', {"value" : 0, "key": 0},  "All periods")];
+    var options = [];
+    if(allperiods)
+    {
+      options = [React.createElement('option', {"value" : -1, "key": 0},  "All periods")];
+    }    
     for(var i = 0; i < this.state.no_p; i++){
-      options.push(React.createElement('option', {"value" : i + 1, "key": i + 1}, i+1))
+      options.push(React.createElement('option', {"value" : i, "key": i + 1}, i))
     }
     return(<select onChange={this.setComfortParam(comf.id, paramName)} value={comf[paramName]}>{options}</select>)
   }
@@ -385,5 +517,5 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Appcon;
 
