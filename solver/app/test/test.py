@@ -1,11 +1,11 @@
 from tabulate import tabulate
-from Parser import *
-from ComfortImplications import *
-from utils import *
-from range_constraints import *
-from StaticVariables import *
-from PlusRoomImplications import *
-from StandardImplications import *
+from controller.Parser import *
+from controller.Implications.ComfortImplications import *
+from util.utils import *
+from util.range_constraints import *
+from controller.StaticVariables import *
+from controller.Implications.RoomImplications import *
+from controller.Implications.StandardImplications import *
 
 StaticVariables.duration = {
     (0, 0, 0, 1): 3,
@@ -199,21 +199,7 @@ StaticVariables.room_dict = {
 }
 
 
-# StaticVariables.room_dict = {
-#     (5, 4, 0, 4): [1, 2, 3],
-#     (5, 4, 1, 4): [1, 2, 3],
-#     (6, 4, 2, 1): [1, 2, 3],
-#     (9, 6, 0, 3): [2, 3, 4],
-#     (9, 6, 1, 3): [2, 3, 4],
-#     (10, 6, 2, 1): [3, 4, 6],
-#     (10, 6, 3, 1): [2, 4, 5],
-#     (11, 7, 2, 1): [1, 5],
-#     (11, 7, 3, 1): [1],
-#     (12, 8, 0, 1): [1]
-# }
-
-
-x = NaiveRoomAlloc()
+x = RoomImplications()
 x.init_vars()
 x.basic_implications()
 x.correctness_implications()
@@ -222,24 +208,9 @@ x.room_basic_implications()
 x.room_correctness_implications()
 x.format_result()
 
-# print x.graph['xtsgndpr'].values()
 z = Parser([x.graph], [x.true_list])
 z.compute_result(1)
-# print 'x!tsgndp: ', len(z.result_graphs[0]['x!tsgndp'][True]), len(StaticVariables.duration)
-# print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x
-# for x in StaticVariables.duration.values()])
 
-# print simple_ttable(z.result_graphs[0]['xtsgndp'][True])
-
-
-# courses = {}
-
-# for (t, s, g, n) in StaticVariables.duration.keys():
-#     courses[(t, s)] = []
-
-# bdf = [x for x in courses.keys()]
-# for x in range(len(courses)):
-#     courses[bdf[x]] = 'ID ' + str(x)
 for sol in z.result_graphs:
     result_graph = z.result_graphs[sol]
     print(list(result_graph.keys()))
@@ -255,14 +226,3 @@ for sol in z.result_graphs:
                 range(
                     StaticVariables.p_max)),
             tablefmt='fancy_grid').encode('utf-8'))
-
-# g = [x for x in z.result_graphs]
-# A = [[] for x in range(len(g))]
-
-# for i in range(len(g)):
-#     for j in range(len(g)):
-#         A[i].append((g[i] == g[j]))
-
-# for i in A:
-#     print
-#     print i

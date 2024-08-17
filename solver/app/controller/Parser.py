@@ -1,5 +1,5 @@
-from StaticVariables import *
-from utils import *
+from controller.StaticVariables import *
+from util.utils import *
 from z3 import *
 
 

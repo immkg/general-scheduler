@@ -1,9 +1,9 @@
-from StaticVariables import *
-from StandardImplications import *
+from controller.StaticVariables import *
+from controller.Implications.StandardImplications import *
 
 
-class NaiveRoomAlloc(StandardImplications):
-    """docstring for NaiveRoomAlloc"""
+class RoomImplications(StandardImplications):
+    """docstring for RoomImplications"""
 
     def __init__(self):
         StandardImplications.__init__(self)

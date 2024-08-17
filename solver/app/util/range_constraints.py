@@ -1,4 +1,4 @@
-from StaticVariables import *
+from controller.StaticVariables import *
 import numpy as np
 
 

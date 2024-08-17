@@ -1,12 +1,11 @@
 from pprint import pprint
 import json
-from interface import *
+from api.interface import *
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
-from jsontranslator import *
-# from tornado import web
+from util.json_translator import *
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -32,7 +31,7 @@ class inputDataHandler(tornado.websocket.WebSocketHandler):
 
     def on_message(self, message):
         print(message)
-        if(message == "knock"):
+        if (message == "knock"):
             self.write_message("yes")
 
         else:
@@ -48,8 +47,7 @@ class inputDataHandler(tornado.websocket.WebSocketHandler):
         print('connection closed')
 
 
-if __name__ == '__main__':
-
+def run_server():
     application = tornado.web.Application([
         (r'/ws', inputDataHandler),
         (r'/', IndexHandler),
@@ -59,3 +57,7 @@ if __name__ == '__main__':
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(8888)
     tornado.ioloop.IOLoop.instance().start()
+
+
+if __name__ == '__main__':
+    run_server()

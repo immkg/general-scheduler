@@ -1,6 +1,6 @@
-from StaticVariables import *
-from range_constraints import *
-from utils import *
+from controller.StaticVariables import *
+from util.range_constraints import *
+from util.utils import *
 
 
 class StandardImplications():

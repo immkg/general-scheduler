@@ -1,6 +1,6 @@
 from collections import defaultdict
-from StaticVariables import *
-from utils import *
+from controller.StaticVariables import *
+from util.utils import *
 
 
 class ComfortImplications():

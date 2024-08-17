@@ -1,5 +1,4 @@
 import numpy as np
-from collections import defaultdict
 
 
 class StaticVariables():
@@ -14,8 +13,8 @@ class StaticVariables():
     num_g = 5
     teachers = np.array(list(range(num_t)))
     subjects = np.array(list(range(num_s)))
-    groups = np.array(list(range(num_g))) 
-    
+    groups = np.array(list(range(num_g)))
+
     periods = []
     for _ in range(len(days)):
         periods.append(np.array(list(range(p_max))))
@@ -33,13 +32,13 @@ class StaticVariables():
     '''
 
     room_dict = {}
-    
+
     tdata = {
-        "24-04-1996" : [0, 1],
-        "30-05-1992" : [1, 2, 3],
-        "10-17-1888" : [3, 5, 9, 11]
+        "24-04-1996": [0, 1],
+        "30-05-1992": [1, 2, 3],
+        "10-17-1888": [3, 5, 9, 11]
     }
-    
+
     sdata = {
         0: [3, 4],
         1: [3, 5],
@@ -50,5 +49,5 @@ class StaticVariables():
         6: [9, 3, 5],
         7: [0, 7],
         8: [8],
-        
+
     }
