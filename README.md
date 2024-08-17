@@ -1,37 +1,61 @@
-# README
+# Timetable Scheduling
 
-# Team MORAGS
+Timetable scheduling is a complex and challenging problem, especially in educational institutions where multiple constraints must be balanced. The goal is to create a timetable that assigns classes, teachers, and rooms to specific time slots, ensuring that all necessary conditions are met.
 
-- Adithya
-- Rohith
-- Mayank
-- Gayathri
-- Sooraj
-- Juse (aka Anil)
+## Constraint Satisfaction Problem
 
-# Concept of the Project
+The timetable scheduling problem can be viewed as a Constraint Satisfaction Problem (CSP), where the objective is to find a solution that satisfies a set of constraints. These constraints can be broadly categorized into two types:
 
-We know that Scheduling is a NP-hard problem. Our aim is to convert the scheduling problem into a SAT problem to use the Z3 SMT solver. We have to find out a way to set up a query language which a client can use to define their problem which should be converted to a SAT problem.
+1. **Correctness Requirements:**
 
-# Installing dependencies
+   - Every lesson must be scheduled exactly once.
+   - No teacher or student group should have overlapping classes.
+   - Rooms must be allocated efficiently without conflicts.
 
-```bash
-pip install -r requirements.txt
-```
+2. **Comfort Requirements:**
+   - Preferences for teaching hours.
+   - Minimizing the number of working days for teachers.
+   - Avoiding long stretches of consecutive classes.
 
-# INSTALLING Z3
+## Approach
 
-Create an issue and assign **immkg** if any problem occurs during installation.
+Approach involves converting the timetable scheduling problem into a SAT (Satisfiability) problem, which can be efficiently solved using the Z3 SMT (Satisfiability Modulo Theories) solver. Here's how it works:
 
-- step 01: `mkdir -p ~/capp; cd ~/capp`
-- step 02: `git clone https://github.com/Z3Prover/z3.git`
-- step 03: `cd z3`
-- step 04: `python scripts/mk_make.py`
-- step 05: `cd build`
-- step 06: `make`
-- step 07: `sudo make install`
-- step 08: `cd ~`
-- step 09: `cp .bashrc .bashrc_bkp`
-- step 10: `echo "export LD_LIBRARY_PATH=~/capp/z3/build" >> .bashrc`
-- step 11: `echo "export PYTHONPATH=~/capp/z3/build/python" >> .bashrc`
-- step 12: `source .bashrc`
+1. **Custom Query Language:** We developed a user-friendly query language that allows users to define their scheduling constraints. This language serves as the interface between the user’s requirements and the underlying SAT problem.
+
+2. **Constraint Encoding:** The user-defined constraints are translated into propositional logic, resulting in a conjunctive normal form (CNF) formula. This formula represents the scheduling problem in a form that the Z3 solver can process.
+
+3. **Z3 Solver:** The Z3 solver is then used to find solutions that satisfy the CNF formula. These solutions correspond to valid timetables that meet all the defined constraints.
+
+## Use Cases
+
+1. **University Timetabling:**
+
+   - **Scenario:** A university needs to schedule classes across different departments.
+   - **Solution:** Define constraints to avoid class overlaps and generate a valid timetable.
+
+2. **Meeting Scheduling for Corporates:**
+
+   - **Scenario:** A corporate office needs to schedule meetings for multiple teams
+   - **Solution:** Define constraints like no overlapping meetings for key participants
+
+## Contributing
+
+Contributions are welcome! Please follow these guidelines:
+
+1. Fork the repository.
+2. Create a new branch for your feature or bugfix.
+3. Write tests and ensure all existing tests pass.
+4. Submit a pull request with a detailed explanation of your changes.
+
+### Code Owners
+
+- [immkg](https://github.com/immkg) - Project Maintainer
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For any questions or support, please open an issue on the [GitHub repository](https://github.com/immkg/general-scheduler/issues).
