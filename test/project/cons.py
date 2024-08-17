@@ -1,6 +1,7 @@
 from var import *
 import math
 
+
 def bic0(t, s, g, n):
     truth = [
         (duration[(t, s, g, n)] > 0)
@@ -154,12 +155,12 @@ def together(groups, t, s, n):
                         ]))
     return
 
-#class cardinality:
+# class cardinality:
 #    '''
 #    Condition that is satisfied when atmost k variables
 #    are satisfied in the given variable list (vars).
 #
-#    The form method return a sat for the cardinality object 
+#    The form method return a sat for the cardinality object
 #
 #    The encoding used is binary and symmetric breaking
 #    '''

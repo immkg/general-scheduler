@@ -1,6 +1,7 @@
 from var import *
 import numpy as np
 
+
 def bic0(t, s, g, n):
     truth = [
         (duration[(t, s, g, n)] > 0)
@@ -135,13 +136,12 @@ def single(vars):
     return ('and', and_list)
 
 
-
 class Cardinality:
     '''
     Condition that is satisfied when atmost k variables
     are satisfied in the given variable list (vars).
 
-    The form method return a sat for the cardinality object 
+    The form method return a sat for the cardinality object
 
     The encoding used is binary and symmetric breaking
     '''
@@ -195,7 +195,8 @@ class Cardinality:
                 B_vars[i][g] = {}
                 for j in range(self.bin_size):
                     if(bin_strings[i][j] == '1'):
-                        B_vars[i][g][j] = ('Bgj', (g, j, Cardinality.group_count))
+                        B_vars[i][g][j] = (
+                            'Bgj', (g, j, Cardinality.group_count))
                     else:
                         B_vars[i][g][j] = negation(
                             ('Bgj', (g, j, Cardinality.group_count)))
@@ -203,13 +204,15 @@ class Cardinality:
         main_and_clause = []
         for i in range(self.n):
             T_or_list = []
-            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+            for g in range(max(0, (self.k - self.n + i)),
+                           min(i, self.k - 1) + 1):
                 T_or_list.append(T_vars[g][i])
 
             or_clause_1 = ('or', negation(self.vars[i]), ('or', T_or_list))
 
             and_list1 = []
-            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+            for g in range(max(0, (self.k - self.n + i)),
+                           min(i, self.k - 1) + 1):
                 and_list2 = []
                 for j in range(self.bin_size):
                     and_list2.append(('or', negation(
@@ -228,7 +231,7 @@ def filter_bool(bool_tuple):
     '''
     Filters the void implications
     '''
-    if type(bool_tuple) == type([]):
+    if isinstance(bool_tuple, type([])):
         bool_tuple = ('and', bool_tuple)
 
     if bool_tuple[0] != 'and' and bool_tuple[0] != 'or':
@@ -245,7 +248,7 @@ def filter_bool(bool_tuple):
     for x in bool_list:
         new_x = filter_bool(x)
 
-        if new_x != None:
+        if new_x is not None:
             new_list.append(new_x)
 
     return (bool_tuple[0], new_list)
@@ -255,10 +258,10 @@ def filter_graph(graph):
     '''
     Filters all void implication
     '''
-    for var_type in graph.keys():
-        for var_tup in graph[var_type].keys():
+    for var_type in list(graph.keys()):
+        for var_tup in list(graph[var_type].keys()):
             new_bool_list = filter_bool(graph[var_type][var_tup])
-            if new_bool_list == None:
+            if new_bool_list is None:
                 graph[var_type].pop(var_tup)
             else:
                 graph[var_type][var_tup] = new_bool_list

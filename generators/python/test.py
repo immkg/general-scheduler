@@ -39,77 +39,83 @@ or()
 
 import copy
 
+
 class OverloadOperators:
-	"""docstring for OverloadOperators"""
-	def __init__(self):
-		self.operations = []
+    """docstring for OverloadOperators"""
 
-	def deepcopy(self):
-		return copy.deepcopy(self)
+    def __init__(self):
+        self.operations = []
 
-	def gen_op(self, op, num):
-		new_obj = self.deepcopy()
-		new_obj.operations.append((op, num))
-		return new_obj
+    def deepcopy(self):
+        return copy.deepcopy(self)
 
-	def __add__(self, num):
-		return self.gen_op('+', num)
+    def gen_op(self, op, num):
+        new_obj = self.deepcopy()
+        new_obj.operations.append((op, num))
+        return new_obj
 
-	def __sub__(self, num):
-		return self.gen_op('-', num)
+    def __add__(self, num):
+        return self.gen_op('+', num)
 
-	def __mul__(self, num):
-		return self.gen_op('*', num)
+    def __sub__(self, num):
+        return self.gen_op('-', num)
 
-	def __pow__(self, num):
-		return self.gen_op('^', num)
+    def __mul__(self, num):
+        return self.gen_op('*', num)
 
-	def __mod__(self, num):
-		return self.gen_op('%', num)
+    def __pow__(self, num):
+        return self.gen_op('^', num)
 
-	def __truediv__(self, num):
-		return self.gen_op('/', num)
+    def __mod__(self, num):
+        return self.gen_op('%', num)
 
+    def __truediv__(self, num):
+        return self.gen_op('/', num)
 
 
 class MVar(OverloadOperators):
-	"""docstring for Var"""
-	def __init__(self, var_id, num_range):
-		OverloadOperators.__init__(self)
-		self.num_range = num_range
-		self.var_id = var_id
-		self.type = 'state'
+    """docstring for Var"""
 
-	def extend_list(self):
-		new_obj = self.deepcopy()
-		new_obj.type = 'extend-list'
-		return new_obj
+    def __init__(self, var_id, num_range):
+        OverloadOperators.__init__(self)
+        self.num_range = num_range
+        self.var_id = var_id
+        self.type = 'state'
 
-	def extend_state(self):
-		new_obj = self.deepcopy()
-		new_obj.type = 'extend-state'
-		return new_obj
+    def extend_list(self):
+        new_obj = self.deepcopy()
+        new_obj.type = 'extend-list'
+        return new_obj
+
+    def extend_state(self):
+        new_obj = self.deepcopy()
+        new_obj.type = 'extend-state'
+        return new_obj
 
 
 class CVar:
-	"""docstring for CompleteVar"""
-	def __init__(self, var_id, m_vars):
-		self.var_id = var_id
-		self.m_vars = m_vars
+    """docstring for CompleteVar"""
+
+    def __init__(self, var_id, m_vars):
+        self.var_id = var_id
+        self.m_vars = m_vars
+
 
 class BoolOpCVar:
-	"""docstring for BoolOpCVar"""
-	def __init__(self, op_type, var_list):
-		self.op_type = op_type
-		self.var_list = var_list
+    """docstring for BoolOpCVar"""
+
+    def __init__(self, op_type, var_list):
+        self.op_type = op_type
+        self.var_list = var_list
 
 
 class Implication:
-	""" a => b """
-	def __init__(self, a, b, constraint_function):
-		self.a = a
-		self.b = b
-		self.constraint_function = constraint_function
+    """ a => b """
+
+    def __init__(self, a, b, constraint_function):
+        self.a = a
+        self.b = b
+        self.constraint_function = constraint_function
 
 
 t = MVar('t', [1, 20])
@@ -118,14 +124,11 @@ g = MVar('g', [1, 20])
 n = MVar('n', [1, 4])
 _ = MVar('_', None)
 
-xtsgn = lambda t, s, g, n: CVar('xtsgn', (t, s, g, n))
+
+def xtsgn(t, s, g, n): return CVar('xtsgn', (t, s, g, n))
 
 
 p = BoolOpCVar('and', [xtsgn(t, s.extend_list(), g, n), xtsgn(t, s, g, n + 1)])
 
 
 i = Implication(xtsgn(t, s, g, n), p, lambda curr_vars: True)
-
-
-
-

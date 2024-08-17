@@ -1,10 +1,12 @@
 from var import *
 
+
 def bic0(t, s, g, n):
     truth = [
         (duration[(t, s, g, n)] > 0)
     ]
     return np.prod(truth)
+
 
 def bic1(t, s, g, n, d, p1, p2):
     truth = [
@@ -15,6 +17,7 @@ def bic1(t, s, g, n, d, p1, p2):
     ]
     return np.prod(truth)
 
+
 def bic2(t, s, g, n, d, p1, p2):
     truth = [
         (p1 <= p2),
@@ -24,6 +27,7 @@ def bic2(t, s, g, n, d, p1, p2):
     ]
     return np.prod(truth)
 
+
 def bic3(d, p):
     truth = [
         (p <= np.max(periods[d])),
@@ -31,11 +35,13 @@ def bic3(d, p):
     ]
     return np.prod(truth)
 
+
 def bic4(d, p):
     truth = [
         (p in periods[d])
     ]
     return np.prod(truth)
+
 
 def bic5(t, s, g, n, d, p):
     truth = [
@@ -44,6 +50,7 @@ def bic5(t, s, g, n, d, p):
     ]
     return np.prod(truth)
 
+
 def bic6(t, s, g, n):
     # this means tsgn belongs to lessons[t] and to lessons[g]
     truth = [
@@ -51,11 +58,13 @@ def bic6(t, s, g, n):
     ]
     return np.prod(truth)
 
+
 def bic7(d):
     truth = [
         (d in days)
     ]
     return np.prod(truth)
+
 
 def bic8(k, d, p):
     truth = [
@@ -66,12 +75,14 @@ def bic8(k, d, p):
     ]
     return np.prod(truth)
 
+
 def bic9(k, d):
     truth = [
         (k >= 1),
         (k <= len(periods[d]) - 2)
     ]
     return np.prod(truth)
+
 
 def bic10(k, d, p):
     truth = [
@@ -80,12 +91,14 @@ def bic10(k, d, p):
     ]
     return np.prod(truth)
 
+
 def bic11(d, p):
     truth = [
         (p >= np.min(periods[d]) + 1),
         (p <= np.max(periods[d]) - 1)
     ]
     return np.prod(truth)
+
 
 def bic12(k, d, p):
     truth = [
@@ -94,12 +107,14 @@ def bic12(k, d, p):
     ]
     return np.prod(truth)
 
+
 def bic13(d, p):
     truth = [
         (p >= np.min(periods[d])),
         (p <= np.max(periods[d]))
     ]
     return np.prod(truth)
+
 
 def negation(var):
     var_to_modify = list(var)
@@ -108,6 +123,7 @@ def negation(var):
     else:
         var_to_modify[0] = '~' + var[0]
     return tuple(var_to_modify)
+
 
 def single(vars):
     and_list = []
@@ -119,6 +135,7 @@ def single(vars):
                 negation(vars[j])
             ]))
     return ('and', and_list)
+
 
 def together(groups, t, s, n):
     '''

@@ -1,6 +1,7 @@
 from StaticVariables import *
 import numpy as np
 
+
 def bic0(t, s, g, n):
     truth = [
         (StaticVariables.duration[(t, s, g, n)] > 0)
@@ -44,10 +45,8 @@ def bic4(d, p):
 
 
 def bic5(t, s, g, n, d, p):
-    truth = [
-        (p1 >= np.min(StaticVariables.periods[d])),
-        (p1 <= np.max(StaticVariables.periods[d]) - StaticVariables.duration[(t, s, g, n)] + 1)
-    ]
+    truth = [(p1 >= np.min(StaticVariables.periods[d])), (p1 <= np.max(
+        StaticVariables.periods[d]) - StaticVariables.duration[(t, s, g, n)] + 1)]
     return np.prod(truth)
 
 

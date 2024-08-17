@@ -1,3 +1,8 @@
+from tabulate import tabulate
+from Parser import *
+from ComfortImplications import *
+from utils import *
+from range_constraints import *
 from StaticVariables import *
 from PlusRoomImplications import *
 from StandardImplications import *
@@ -38,7 +43,7 @@ StaticVariables.duration = {
     (4, 3, 2, 2): 1,
     (4, 3, 3, 2): 1,
     (4, 3, 2, 3): 1,
-    (4, 3, 3, 3): 1, 
+    (4, 3, 3, 3): 1,
     (5, 4, 0, 1): 1,
     (5, 4, 1, 1): 1,
     (5, 4, 1, 2): 1,
@@ -86,23 +91,22 @@ StaticVariables.duration = {
     (12, 8, 0, 1): 3,
     (12, 8, 1, 1): 3,
     (12, 8, 2, 1): 3,
-    (12, 8, 3, 1): 3,    
-    
-    
+    (12, 8, 3, 1): 3,
+
+
 }
 
-for (t, s, g, n) in StaticVariables.duration.keys():
-    StaticVariables.num_t = max([StaticVariables.num_t, t+1])
-    StaticVariables.num_s = max([StaticVariables.num_s, s+1])
-    StaticVariables.num_g = max([StaticVariables.num_g, g+1])
+for (t, s, g, n) in list(StaticVariables.duration.keys()):
+    StaticVariables.num_t = max([StaticVariables.num_t, t + 1])
+    StaticVariables.num_s = max([StaticVariables.num_s, s + 1])
+    StaticVariables.num_g = max([StaticVariables.num_g, g + 1])
 
-StaticVariables.teachers = np.array(range(StaticVariables.num_t))
-StaticVariables.subjects = np.array(range(StaticVariables.num_s))
-StaticVariables.groups = np.array(range(StaticVariables.num_g))  
+StaticVariables.teachers = np.array(list(range(StaticVariables.num_t)))
+StaticVariables.subjects = np.array(list(range(StaticVariables.num_s)))
+StaticVariables.groups = np.array(list(range(StaticVariables.num_g)))
 
 
 StaticVariables.rooms = 7
-
 
 
 StaticVariables.room_dict = {
@@ -141,7 +145,7 @@ StaticVariables.room_dict = {
     (4, 3, 2, 2): [0, 1, 2, 3, 4, 5, 6],
     (4, 3, 3, 2): [0, 1, 2, 3, 4, 5, 6],
     (4, 3, 2, 3): [0, 1, 2, 3, 4, 5, 6],
-    (4, 3, 3, 3): [0, 1, 2, 3, 4, 5, 6], 
+    (4, 3, 3, 3): [0, 1, 2, 3, 4, 5, 6],
     (5, 4, 0, 1): [0, 1, 2, 3, 4, 5, 6],
     (5, 4, 1, 1): [0, 1, 2, 3, 4, 5, 6],
     (5, 4, 1, 2): [0, 1, 2, 3, 4, 5, 6],
@@ -189,11 +193,10 @@ StaticVariables.room_dict = {
     (12, 8, 0, 1): [0, 1, 2, 3, 4, 5, 6],
     (12, 8, 1, 1): [0, 1, 2, 3, 4, 5, 6],
     (12, 8, 2, 1): [0, 1, 2, 3, 4, 5, 6],
-    (12, 8, 3, 1): [0, 1, 2, 3, 4, 5, 6],    
-    
-    
-}
+    (12, 8, 3, 1): [0, 1, 2, 3, 4, 5, 6],
 
+
+}
 
 
 # StaticVariables.room_dict = {
@@ -210,15 +213,6 @@ StaticVariables.room_dict = {
 # }
 
 
-from range_constraints import *
-from utils import *
-from ComfortImplications import *
-from StandardImplications import *
-from Parser import *
-from utils import *
-
-from tabulate import tabulate
-
 x = NaiveRoomAlloc()
 x.init_vars()
 x.basic_implications()
@@ -232,11 +226,11 @@ x.format_result()
 z = Parser([x.graph], [x.true_list])
 z.compute_result(1)
 # print 'x!tsgndp: ', len(z.result_graphs[0]['x!tsgndp'][True]), len(StaticVariables.duration)
-# print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x for x in StaticVariables.duration.values()])
+# print 'xtsgndp: ', len(z.result_graphs[0]['xtsgndp'][True]), np.sum([x
+# for x in StaticVariables.duration.values()])
 
 # print simple_ttable(z.result_graphs[0]['xtsgndp'][True])
 
-from tabulate import tabulate
 
 # courses = {}
 
@@ -246,15 +240,21 @@ from tabulate import tabulate
 # bdf = [x for x in courses.keys()]
 # for x in range(len(courses)):
 #     courses[bdf[x]] = 'ID ' + str(x)
-from utils import *
 for sol in z.result_graphs:
     result_graph = z.result_graphs[sol]
-    print result_graph.keys()
+    print(list(result_graph.keys()))
     scheduled = result_graph['xtsgndpr'][True]
-    print scheduled
+    print(scheduled)
     ttable = simple_ttable_wr(scheduled)
-    
-    print tabulate(ttable, headers=["X"]+range(StaticVariables.p_max), tablefmt='fancy_grid').encode('utf-8')
+
+    print(
+        tabulate(
+            ttable,
+            headers=["X"] +
+            list(
+                range(
+                    StaticVariables.p_max)),
+            tablefmt='fancy_grid').encode('utf-8'))
 
 # g = [x for x in z.result_graphs]
 # A = [[] for x in range(len(g))]
@@ -264,5 +264,5 @@ for sol in z.result_graphs:
 #         A[i].append((g[i] == g[j]))
 
 # for i in A:
-#     print 
+#     print
 #     print i

@@ -1,6 +1,7 @@
 from StaticVariables import *
 from z3 import *
 
+
 def negation(var):
     if var[0] == StaticVariables.not_head:
         return var[1]
@@ -25,7 +26,7 @@ class Cardinality:
     Condition that is satisfied when atmost k variables
     are satisfied in the given variable list (vars).
 
-    The form method return a sat for the cardinality object 
+    The form method return a sat for the cardinality object
 
     The encoding used is binary and symmetric breaking
     '''
@@ -79,7 +80,8 @@ class Cardinality:
                 B_vars[i][g] = {}
                 for j in range(self.bin_size):
                     if(bin_strings[i][j] == '1'):
-                        B_vars[i][g][j] = ('Bgj', (g, j, Cardinality.group_count))
+                        B_vars[i][g][j] = (
+                            'Bgj', (g, j, Cardinality.group_count))
                     else:
                         B_vars[i][g][j] = negation(
                             ('Bgj', (g, j, Cardinality.group_count)))
@@ -87,13 +89,16 @@ class Cardinality:
         main_and_clause = []
         for i in range(self.n):
             T_or_list = []
-            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+            for g in range(max(0, (self.k - self.n + i)),
+                           min(i, self.k - 1) + 1):
                 T_or_list.append(T_vars[g][i])
 
-            or_clause_1 = (StaticVariables.or_head, negation(self.vars[i]), (StaticVariables.or_head, T_or_list))
+            or_clause_1 = (StaticVariables.or_head, negation(
+                self.vars[i]), (StaticVariables.or_head, T_or_list))
 
             and_list1 = []
-            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+            for g in range(max(0, (self.k - self.n + i)),
+                           min(i, self.k - 1) + 1):
                 and_list2 = []
                 for j in range(self.bin_size):
                     and_list2.append((StaticVariables.or_head, negation(
@@ -103,7 +108,8 @@ class Cardinality:
 
             and_clause_1 = (StaticVariables.and_head, and_list1)
 
-            main_and_clause.append((StaticVariables.and_head, or_clause_1, and_clause_1))
+            main_and_clause.append(
+                (StaticVariables.and_head, or_clause_1, and_clause_1))
 
         return (StaticVariables.and_head, main_and_clause)
 
@@ -112,7 +118,7 @@ def filter_bool(bool_tuple):
     '''
     Filters the void implications
     '''
-    if type(bool_tuple) == type([]):
+    if isinstance(bool_tuple, type([])):
         bool_tuple = (StaticVariables.and_head, bool_tuple)
 
     if bool_tuple[0] != StaticVariables.and_head and bool_tuple[0] != StaticVariables.or_head:
@@ -121,9 +127,11 @@ def filter_bool(bool_tuple):
     bool_list = bool_tuple[1]
     if len(bool_list) == 0:
         if (bool_tuple[0] == StaticVariables.and_head):
-            return (StaticVariables.or_head,([negation(('t',(1))), ('t', (1))]))
+            return (StaticVariables.or_head,
+                    ([negation(('t', (1))), ('t', (1))]))
         else:
-            return (StaticVariables.and_head,([negation(('t',(1))), ('t', (1))]))
+            return (StaticVariables.and_head,
+                    ([negation(('t', (1))), ('t', (1))]))
     if len(bool_list) == 1:
         return bool_list[0]
 
@@ -131,19 +139,20 @@ def filter_bool(bool_tuple):
     for x in bool_list:
         new_x = filter_bool(x)
 
-        if new_x != None:
+        if new_x is not None:
             new_list.append(new_x)
 
     return (bool_tuple[0], new_list)
 
 # print filter_bool(('and', [('or', []), ('or', [])]))
 
+
 def filter_graph(graph):
     '''
     Filters all void implication
     '''
-    for var_type in graph.keys():
-        for var_tup in graph[var_type].keys():
+    for var_type in list(graph.keys()):
+        for var_tup in list(graph[var_type].keys()):
             new_bool_list = filter_bool(graph[var_type][var_tup])
             # if new_bool_list == None:
             #     graph[var_type].pop(var_tup)
@@ -156,18 +165,19 @@ def parse_val(v):
     if(v[0] == 'not'):
         return Not(Bool(str(v[1])))
     elif(v[0] == 'or'):
-        return Or([ parse_val(b) for b in v[1] ])                     
+        return Or([parse_val(b) for b in v[1]])
     elif(v[0] == 'and'):
-        return And([ parse_val(b) for b in v[1] ])
+        return And([parse_val(b) for b in v[1]])
     else:
         return Bool(str(v))
-    
-def compute_bool(*args, **keywords):        #Time table SAT solver
+
+
+def compute_bool(*args, **keywords):  # Time table SAT solver
     s = Solver()
     s.set(**keywords)
     s.add(*args)
     if keywords.get('show', False):
-        print s
+        print(s)
     r = s.check()
     if r == unsat:
         return (False, 'No Solution')
@@ -178,25 +188,28 @@ def compute_bool(*args, **keywords):        #Time table SAT solver
 
 
 def simple_ttable(truth_tsgndp):
-    
-    ttable = [[[] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
-    
+
+    ttable = [[[] for i in range(StaticVariables.p_max)]
+              for i in range(len(StaticVariables.days))]
+
     for (t, s, g, n, d, p) in truth_tsgndp:
         ttable[d][p].append((t, s, g, n))
-    
+
     for i in range(len(ttable)):
-        ttable[i].insert(0, "Day {}".format(str(i)))  
+        ttable[i].insert(0, "Day {}".format(str(i)))
 
     return ttable
 
+
 def simple_ttable_wr(truth_tsgndpr):
-    
-    ttable = [[[] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
-    
+
+    ttable = [[[] for i in range(StaticVariables.p_max)]
+              for i in range(len(StaticVariables.days))]
+
     for (t, s, g, n, d, p, r) in truth_tsgndpr:
         ttable[d][p].append((t, s, g, n, r))
-    
+
     for i in range(len(ttable)):
-        ttable[i].insert(0, "Day {}".format(str(i)))  
+        ttable[i].insert(0, "Day {}".format(str(i)))
 
     return ttable

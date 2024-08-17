@@ -1,6 +1,7 @@
 import math
 import numpy as np
 
+
 def negation(var):
     var_to_modify = list(var)
     if var[0][0] == '~':
@@ -15,7 +16,7 @@ class Cardinality:
     Condition that is satisfied when atmost k variables
     are satisfied in the given variable list (vars).
 
-    The form method return a sat for the cardinality object 
+    The form method return a sat for the cardinality object
 
     The encoding used is binary and symmetric breaking
     '''
@@ -69,7 +70,8 @@ class Cardinality:
                 B_vars[i][g] = {}
                 for j in range(self.bin_size):
                     if(bin_strings[i][j] == '1'):
-                        B_vars[i][g][j] = ('Bgj', (g, j, Cardinality.group_count))
+                        B_vars[i][g][j] = (
+                            'Bgj', (g, j, Cardinality.group_count))
                     else:
                         B_vars[i][g][j] = negation(
                             ('Bgj', (g, j, Cardinality.group_count)))
@@ -77,13 +79,15 @@ class Cardinality:
         main_and_clause = []
         for i in range(self.n):
             T_or_list = []
-            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+            for g in range(max(0, (self.k - self.n + i)),
+                           min(i, self.k - 1) + 1):
                 T_or_list.append(T_vars[g][i])
 
             or_clause_1 = ('or', negation(self.vars[i]), ('or', T_or_list))
 
             and_list1 = []
-            for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
+            for g in range(max(0, (self.k - self.n + i)),
+                           min(i, self.k - 1) + 1):
                 and_list2 = []
                 for j in range(self.bin_size):
                     and_list2.append(('or', negation(
@@ -97,12 +101,13 @@ class Cardinality:
 
         return ('and', main_and_clause)
 
+
 test = Cardinality([('xtsg', (1, 1, 1)), ('xtsg', (2, 2, 3)),
-                    ('xtsg', (1, 2, 1)),('xtsg', (2, 2, 2)),      ('xtsg', (1, 2, 3))], 3)
-print (test.form())
+                    ('xtsg', (1, 2, 1)), ('xtsg', (2, 2, 2)), ('xtsg', (1, 2, 3))], 3)
+print((test.form()))
 
 test2 = Cardinality([('xtsg', (1, 1, 1)), ('xtsg', (2, 2, 3)),
-                    ('xtsg', (1, 2, 1)),('xtsg', (2, 2, 2)),      ('xtsg', (1, 2, 3))], 3)
-print (test2.form())
+                    ('xtsg', (1, 2, 1)), ('xtsg', (2, 2, 2)), ('xtsg', (1, 2, 3))], 3)
+print((test2.form()))
 
-print (test2.__dict__)
+print((test2.__dict__))
