@@ -1,10 +1,9 @@
 from z3 import *
 from implic import *
 
-var_result = {}				#stores result in Bool instance
 bool_list = []
 truth_dict = {}
-bool_graph = {}
+all_result = {}
 
 def ParseVal(v):
 	if(v[0] == 'not'):
@@ -38,26 +37,33 @@ for i in graph:						#z3 bool instance clause dict
 
 bool_list.append(Implies(True, ParseVal(true_list))) 	#True_list expr
 
-time_table = compute_bool(bool_list)
+for itr in range(1):
+    print "Finding Solution " + str(itr+1)
+    time_table = compute_bool(bool_list)
 
-if time_table[0] == False:
-	exit(0)
+    if time_table[0] == False:
+        break
 
-m = time_table[1]
+    m = time_table[1]
+    not_again = []
+    var_result = {}
+    
+    for x in m.decls():
+        var_result[x] = bool(m[x])
+        not_again.append(Bool(str(x)) != m[x])
 
-for x in m.decls():
-	var_result[x] = bool(m[x])
+    result_graph = {}
 
-result_graph = {}
-
-for x in var_result:
-	y = str(x)[2:-1].split('\', ')
-	result_graph[y[0]] = {
-		True: [],
-		False: []
-	}
+    for x in var_result:
+        y = str(x)[2:-1].split('\', ')
+        result_graph[y[0]] = {
+                True: [],
+                False: []
+                }
 	
-for x in var_result:
-	y = str(x)[2:-1].split('\', ')
-	result_graph[y[0]][var_result[x]].append(tuple(map(int, y[1][1:-1].split(','))))
-
+    for x in var_result:
+        y = str(x)[2:-1].split('\', ')
+        result_graph[y[0]][var_result[x]].append(tuple(map(int, y[1][1:-1].split(','))))
+    
+    bool_list.append(Or(not_again))
+    all_result[itr] = result_graph

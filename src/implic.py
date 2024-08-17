@@ -36,9 +36,9 @@ for k in range(1, p_max + 1): #should it not be from 1 to pmax rather than from 
         for d in days:
             if bic9(k, d):
                 graph['iktd'][(k, t, d)] = []
-            for p in periods[d]:
-                if bic8(k, d, p):
-                    graph['iktdp'][(k, t, d, p)] = []
+                for p in periods[d]:
+                    if bic8(k, d, p):
+                        graph['iktdp'][(k, t, d, p)] = []
 
 for k in range(1, p_max + 1):
     for g in groups:
@@ -46,9 +46,9 @@ for k in range(1, p_max + 1):
         for d in days:
             if bic9(k, d):
                 graph['ikgd'][(k, g, d)] = []
-            for p in periods[d]:
-                if bic8(k, d, p):
-                    graph['ikgdp'][(k, g, d, p)] = []
+                for p in periods[d]:
+                    if bic8(k, d, p):
+                        graph['ikgdp'][(k, g, d, p)] = []
 
 
 for t in teachers:
@@ -288,7 +288,7 @@ Check the previous implication.
 '''
 
 
-filter_graph()
+filter_graph(graph)
 true_list = filter_bool(true_list)
 
 

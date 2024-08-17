@@ -1,126 +1,11 @@
-from var import *
-import numpy as np
-
-def bic0(t, s, g, n):
-    truth = [
-        (duration[(t, s, g, n)] > 0)
-    ]
-    return np.prod(truth)
-
-
-def bic1(t, s, g, n, d, p1, p2):
-    truth = [
-        (p1 >= np.min(periods[d])),
-        (p1 <= np.max(periods[d]) - duration[(t, s, g, n)] + 1),
-        (p2 >= p1),
-        (p2 <= p1 + duration[(t, s, g, n)] - 1)
-    ]
-    return np.prod(truth)
-
-
-def bic2(t, s, g, n, d, p1, p2):
-    truth = [
-        (p1 <= p2),
-        (p1 >= p2 - duration[(t, s, g, n)] + 1),
-        (p1 >= np.min(periods[d])),
-        (p1 <= np.max(periods[d]) - duration[(t, s, g, n)] + 1)
-    ]
-    return np.prod(truth)
-
-
-def bic3(d, p):
-    truth = [
-        (p <= np.max(periods[d])),
-        (p >= np.min(periods[d]))
-    ]
-    return np.prod(truth)
-
-
-def bic4(d, p):
-    truth = [
-        (p in periods[d])
-    ]
-    return np.prod(truth)
-
-
-def bic5(t, s, g, n, d, p):
-    truth = [
-        (p1 >= np.min(periods[d])),
-        (p1 <= np.max(periods[d]) - duration[(t, s, g, n)] + 1)
-    ]
-    return np.prod(truth)
-
-
-def bic6(t, s, g, n):
-    # this means tsgn belongs to lessons[t] and to lessons[g]
-    truth = [
-        (duration[(t, s, g, n)] > 0)
-    ]
-    return np.prod(truth)
-
-
-def bic7(d):
-    truth = [
-        (d in days)
-    ]
-    return np.prod(truth)
-
-
-def bic8(k, d, p):
-    truth = [
-        (k >= 1),
-        (k <= len(periods[d]) - 2),
-        (p >= np.min(periods[d]) + 1),
-        (p <= np.max(periods[d]) - k)
-    ]
-    return np.prod(truth)
-
-
-def bic9(k, d):
-    truth = [
-        (k >= 1),
-        (k <= len(periods[d]) - 2)
-    ]
-    return np.prod(truth)
-
-
-def bic10(k, d, p):
-    truth = [
-        (p >= np.min(periods[d]) + 1),
-        (p <= np.max(periods[d]) - k)
-    ]
-    return np.prod(truth)
-
-
-def bic11(d, p):
-    truth = [
-        (p >= np.min(periods[d]) + 1),
-        (p <= np.max(periods[d]) - 1)
-    ]
-    return np.prod(truth)
-
-
-def bic12(k, d, p):
-    truth = [
-        (k >= 1),
-        (k <= np.max(periods[d]) - p)
-    ]
-    return np.prod(truth)
-
-
-def bic13(d, p):
-    truth = [
-        (p >= np.min(periods[d])),
-        (p <= np.max(periods[d]))
-    ]
-    return np.prod(truth)
-
+from StaticVariables import *
+from z3 import *
 
 def negation(var):
-    if var[0] == 'not':
+    if var[0] == StaticVariables.not_head:
         return var[1]
     else:
-        return ('not', var)
+        return (StaticVariables.not_head, var)
 
 
 def single(vars):
@@ -128,12 +13,11 @@ def single(vars):
     k = len(vars)
     for j in range(k):
         for i in range(j):
-            and_list.append(('or', [
+            and_list.append((StaticVariables.or_head, [
                 negation(vars[i]),
                 negation(vars[j])
             ]))
-    return ('and', and_list)
-
+    return (StaticVariables.and_head, and_list)
 
 
 class Cardinality:
@@ -168,7 +52,7 @@ class Cardinality:
         Returns a sat for the given cardinality object
         '''
         if (self.k == 0):
-            return (negation(('or', [self.vars])))
+            return (negation((StaticVariables.or_head, [self.vars])))
 
         # Auxillary variables
         # --------------------
@@ -206,22 +90,22 @@ class Cardinality:
             for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
                 T_or_list.append(T_vars[g][i])
 
-            or_clause_1 = ('or', negation(self.vars[i]), ('or', T_or_list))
+            or_clause_1 = (StaticVariables.or_head, negation(self.vars[i]), (StaticVariables.or_head, T_or_list))
 
             and_list1 = []
             for g in range(max(0, (self.k - self.n + i)), min(i, self.k - 1) + 1):
                 and_list2 = []
                 for j in range(self.bin_size):
-                    and_list2.append(('or', negation(
+                    and_list2.append((StaticVariables.or_head, negation(
                         T_vars[g][i]), B_vars[i][g][j]))
 
-                and_list1.append(('and', and_list2))
+                and_list1.append((StaticVariables.and_head, and_list2))
 
-            and_clause_1 = ('and', and_list1)
+            and_clause_1 = (StaticVariables.and_head, and_list1)
 
-            main_and_clause.append(('and', or_clause_1, and_clause_1))
+            main_and_clause.append((StaticVariables.and_head, or_clause_1, and_clause_1))
 
-        return ('and', main_and_clause)
+        return (StaticVariables.and_head, main_and_clause)
 
 
 def filter_bool(bool_tuple):
@@ -229,9 +113,9 @@ def filter_bool(bool_tuple):
     Filters the void implications
     '''
     if type(bool_tuple) == type([]):
-        bool_tuple = ('and', bool_tuple)
+        bool_tuple = (StaticVariables.and_head, bool_tuple)
 
-    if bool_tuple[0] != 'and' and bool_tuple[0] != 'or':
+    if bool_tuple[0] != StaticVariables.and_head and bool_tuple[0] != StaticVariables.or_head:
         return bool_tuple
 
     bool_list = bool_tuple[1]
@@ -262,3 +146,41 @@ def filter_graph(graph):
                 graph[var_type].pop(var_tup)
             else:
                 graph[var_type][var_tup] = new_bool_list
+
+
+def parse_val(v):
+    if(v[0] == 'not'):
+        return Not(Bool(str(v[1])))
+    elif(v[0] == 'or'):
+        return Or([ parse_val(b) for b in v[1] ])                     
+    elif(v[0] == 'and'):
+        return And([ parse_val(b) for b in v[1] ])
+    else:
+        return Bool(str(v))
+    
+def compute_bool(*args, **keywords):        #Time table SAT solver
+    s = Solver()
+    s.set(**keywords)
+    s.add(*args)
+    if keywords.get('show', False):
+        print s
+    r = s.check()
+    if r == unsat:
+        return (False, 'No Solution')
+    elif r == unknown:
+        return (False, 'Failed to solve')
+    else:
+        return (True, s.model())
+
+
+def simple_ttable(truth_tsgndp):
+    
+    ttable = [[[] for i in range(StaticVariables.p_max) ] for i in range(len(StaticVariables.days))]
+    
+    for (t, s, g, n, d, p) in truth_tsgndp:
+        ttable[d][p].append((t, s, g, n))
+    
+    for i in range(len(ttable)):
+        ttable[i].insert(0, "Day {}".format(str(i)))  
+
+    return ttable
