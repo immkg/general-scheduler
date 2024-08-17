@@ -51,7 +51,7 @@ class Parser():
             for x in truth_assignments:
                 y = str(x)[2:-1].split('\', ')
                 result_graph[y[0]][bool(truth_assignments[x])].append(
-                    tuple(map(int, y[1][1:-1].split(', '))))
+                    tuple(map(lambda nps: int(nps.split('(')[-1].split(')')[0]), y[1][1:-1].split(', '))))
 
             bool_list.append(Or(not_again))
             self.result_graphs[i] = result_graph
