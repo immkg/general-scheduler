@@ -1,5 +1,5 @@
-from StaticVariables import *
-from StandardImplications import *
+from controller.StaticVariables import *
+from controller.StandardImplications import *
 
 
 class NaiveRoomAlloc(StandardImplications):

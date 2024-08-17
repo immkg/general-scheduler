@@ -1,10 +1,10 @@
-from range_constraints import *
-from utils import *
-from ComfortImplications import *
-from StandardImplications import *
-from Parser import *
-from utils import *
-from StaticVariables import *
+from controller.range_constraints import *
+from util.utils import *
+from controller.ComfortImplications import *
+from controller.StandardImplications import *
+from controller.Parser import *
+from util.utils import *
+from controller.StaticVariables import *
 from tabulate import tabulate
 
 

@@ -1,4 +1,4 @@
-from PSRB import *
+from controller.PSRB import *
 
 for date in StaticVariables.tdata:
     absent_teacher_list = StaticVariables.tdata[date]

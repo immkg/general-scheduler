@@ -1,11 +1,11 @@
 from tabulate import tabulate
-from Parser import *
-from ComfortImplications import *
-from utils import *
-from range_constraints import *
-from StaticVariables import *
-from PlusRoomImplications import *
-from StandardImplications import *
+from controller.Parser import *
+from controller.ComfortImplications import *
+from util.utils import *
+from controller.range_constraints import *
+from controller.StaticVariables import *
+from controller.PlusRoomImplications import *
+from controller.StandardImplications import *
 
 StaticVariables.duration = {
     (0, 0, 0, 1): 3,

@@ -1,8 +1,8 @@
-from range_constraints import *
-from ComfortImplications import *
-from StandardImplications import *
-from Parser import *
-from utils import *
+from controller.range_constraints import *
+from controller.ComfortImplications import *
+from controller.StandardImplications import *
+from controller.Parser import *
+from util.utils import *
 
 import numpy as np
 from tabulate import tabulate
