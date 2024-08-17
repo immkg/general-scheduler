@@ -8,14 +8,17 @@ class StaticVariables():
     and_head = 'and'
     not_head = 'not'
     p_max = 8
-    days = range(6)
+    days = list(range(6))
     num_t = 8
     num_s = 4
     num_g = 5
-    periods = [np.array(range(p_max)) for _ in range(len(days))]
-    teachers = np.array(range(num_t))
-    subjects = np.array(range(num_s))
-    groups = np.array(range(num_g)) 
+    teachers = np.array(list(range(num_t)))
+    subjects = np.array(list(range(num_s)))
+    groups = np.array(list(range(num_g))) 
+    
+    periods = []
+    for _ in range(len(days)):
+        periods.append(np.array(list(range(p_max))))
 
     duration = {
         (0, 0, 0, 1): 3,
