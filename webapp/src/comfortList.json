@@ -1,42 +1,44 @@
-{"comforts": [
-      {
-        "id" : 1,
-        "label" : "Forbidden hours for teacher"
-      },
-      {
-        "id" : 2,
-        "label" : "Favourable hours for teacher"
-      },
-      {
-        "id" : 3,
-        "label" : "Forbidden hours for group"
-      },
-      {
-        "id" : 4,
-        "label" : "Group overlap restriction"
-      },
-      {
-        "id" : 5,
-        "label" : "Teacher overlap restriction"
-      },
-      {
-        "id" : 6,
-        "label" : "Teacher overlap requirement"
-      },
-      {
-        "id" : 7,
-        "label" : "Number of teaching days in a week"
-      },
-      {
-        "id" : 8,
-        "label" : "Per day limit on no. of periods for a group"
-      },
-      {
-        "id" : 9,
-        "label" : "Idle period constraints"
-      },
-      {
-        "id" : 10,
-        "label" : "Lessons with fixed / forbidden periods"
-      }
-      ]}
+{
+  "comforts": [
+    {
+      "id": 1,
+      "label": "Forbidden hours for teacher"
+    },
+    {
+      "id": 2,
+      "label": "Favorable hours for teacher"
+    },
+    {
+      "id": 3,
+      "label": "Forbidden hours for group"
+    },
+    {
+      "id": 4,
+      "label": "Group overlap restriction"
+    },
+    {
+      "id": 5,
+      "label": "Teacher overlap restriction"
+    },
+    {
+      "id": 6,
+      "label": "Teacher overlap requirement"
+    },
+    {
+      "id": 7,
+      "label": "Number of teaching days in a week"
+    },
+    {
+      "id": 8,
+      "label": "Per day limit on no. of periods for a group"
+    },
+    {
+      "id": 9,
+      "label": "Idle period constraints"
+    },
+    {
+      "id": 10,
+      "label": "Lessons with fixed / forbidden periods"
+    }
+  ]
+}
