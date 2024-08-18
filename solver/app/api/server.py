@@ -4,7 +4,6 @@ from api.interface import *
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
-import tornado.wsgi
 import tornado.websocket
 from util.json_translator import *
 
@@ -48,25 +47,20 @@ class inputDataHandler(tornado.websocket.WebSocketHandler):
         print('connection closed')
 
 
-def run_server():
-    application = tornado.web.Application([
+def get_routes():
+    return [
         (r'/ws', inputDataHandler),
         (r'/', IndexHandler),
         (r'/result', ResultHandler),
-    ])
+    ]
+
+
+def run_server():
+    application = tornado.web.Application(get_routes())
 
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(8888)
     tornado.ioloop.IOLoop.instance().start()
-
-
-def wsgi_application():
-    application = tornado.wsgi.WSGIApplication([
-        (r'/ws', inputDataHandler),
-        (r'/', IndexHandler),
-        (r'/result', ResultHandler),
-    ])
-    return application
 
 
 if __name__ == '__main__':
