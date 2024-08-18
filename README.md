@@ -17,6 +17,24 @@ The timetable scheduling problem can be viewed as a Constraint Satisfaction Prob
    - Minimizing the number of working days for teachers.
    - Avoiding long stretches of consecutive classes.
 
+## Example Output
+
+### Generated timetable for 2 batches having 3 subjects taught by 3 professors
+
+![](docs/scheduled_timetable.png)
+
+### Initial classroom parameters were added
+
+![](docs/clasroom_paramters.png)
+
+### Subjects were added for batches
+
+![](docs/correctness_constraints.png)
+
+### Comfort conditions were added
+
+![](docs/comfort_constraints.png)
+
 ## Approach
 
 Approach involves converting the timetable scheduling problem into a SAT (Satisfiability) problem, which can be efficiently solved using the Z3 SMT (Satisfiability Modulo Theories) solver. Here's how it works:

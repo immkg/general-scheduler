@@ -1,14 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import comfortList from "./comfortList.json";
-import {
-  RaisedButton,
-  TextField,
-  FlatButton,
-  AppBar,
-  Drawer,
-  MenuItem,
-} from "material-ui";
+import { RaisedButton, TextField, FlatButton, AppBar, Chip } from "material-ui";
 
 class App extends Component {
   constructor(props) {
@@ -19,8 +12,8 @@ class App extends Component {
       no_c: 0,
       cid: 0,
       subs: [],
-      no_t: 4,
-      no_g: 4,
+      no_t: 0,
+      no_g: 0,
       dow: 5,
       no_p: 6,
       maxNoClass: 6,
@@ -28,6 +21,10 @@ class App extends Component {
       comfConst: [],
       completed: 0,
       helpopen: false,
+      teachers: [],
+      groups: [],
+      teacherInput: "",
+      groupInput: "",
     };
   }
 
@@ -50,7 +47,37 @@ class App extends Component {
     };
   };
 
+  handleTeacherInputChange = (event) => {
+    this.setState({ teacherInput: event.target.value });
+    this.handleAddTeachers();
+  };
+
+  handleGroupInputChange = (event) => {
+    this.setState({ groupInput: event.target.value });
+    this.handleAddGroups();
+  };
+
+  handleAddTeachers = () => {
+    const { teacherInput } = this.state;
+    const teachers = teacherInput
+      .split(",")
+      .map((name) => name.trim())
+      .filter((name) => name);
+    this.setState({ teachers, no_t: teachers.length });
+  };
+
+  handleAddGroups = () => {
+    const { groupInput } = this.state;
+    const groups = groupInput
+      .split(",")
+      .map((name) => name.trim())
+      .filter((name) => name);
+    this.setState({ groups, no_g: groups.length });
+  };
+
   render() {
+    const { teachers, groups, teacherInput, groupInput } = this.state;
+
     return (
       <div className="App">
         <AppBar showMenuIconButton={false} title="Timetable Scheduler" />
@@ -90,22 +117,22 @@ class App extends Component {
               min="1"
             />
 
-            <label htmlFor="no_t">Number of Teachers:</label>
+            <label htmlFor="teacherInput">Teachers:</label>
             <TextField
-              id="no_t"
-              type="number"
-              onChange={this.handleChangeNo_t}
-              defaultValue={this.state.no_t}
-              min="1"
+              id="teacherInput"
+              type="text"
+              value={teacherInput}
+              onChange={this.handleTeacherInputChange}
+              placeholder="Enter names separated by commas"
             />
 
-            <label htmlFor="no_g">Number of Groups:</label>
+            <label htmlFor="groupInput">Groups:</label>
             <TextField
-              id="no_g"
-              type="number"
-              onChange={this.handleChangeNo_g}
-              defaultValue={this.state.no_g}
-              min="1"
+              id="groupInput"
+              type="text"
+              value={groupInput}
+              onChange={this.handleGroupInputChange}
+              placeholder="Enter names separated by commas"
             />
           </div>
         </div>
@@ -207,13 +234,20 @@ class App extends Component {
           var cellitems = [];
           if (typeof rowitem != "string")
             rowitem.forEach((cellitem) => {
-              var thissub = this.state.subs.filter(
+              var thiss = this.state.subs.filter(
                 (subs) => subs.id == cellitem[1]
-              );
-              // console.log(thissub);
+              )[0].name;
+              var thist = this.state.teachers[cellitem[0]];
+              var thisg = this.state.groups[cellitem[2]];
+
+              console.log({ thiss, thist, thisg });
               // cellitems.push(React.createElement('span', {key: k++}, "(" + thissub[0].name + ") "))
               cellitems.push(
-                React.createElement("span", { key: k++ }, "(" + cellitem + ") ")
+                React.createElement(
+                  "span",
+                  { key: k++ },
+                  "(" + thiss + " for " + thisg + " by " + thist + ") "
+                )
               );
             });
           else
